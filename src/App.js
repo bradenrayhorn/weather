@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter} from "react-router-dom";
+import {Route, Switch} from "react-router";
+import NotFound from "./pages/NotFound";
+import Weather from "./pages/Weather";
+import Login from "./pages/Login";
+import PublicRoute from "./utils/public-route";
+import PrivateRoute from "./utils/private-route";
+import {withSnackbar} from "notistack";
+import axios from "axios";
+import {logout} from "./utils/user";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    axios.interceptors.response.use(response => {
+      if (response.data.code === 202) {
+        this.props.enqueueSnackbar('Session is invalid.', {
+          variant: 'error'
+        });
+        logout();
+        return;
+      }
+      return response;
+    });
+  }
+
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <PrivateRoute path="/" exact component={Weather}/>
+          <PublicRoute path="/login" component={Login}/>
+          <Route component={NotFound}/>
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
-export default App;
+export default withSnackbar(App);
