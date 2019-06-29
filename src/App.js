@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter} from "react-router-dom";
+import {HashRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import NotFound from "./pages/NotFound";
 import Weather from "./pages/Weather";
@@ -28,13 +28,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <PrivateRoute path="/" exact component={Weather}/>
           <PublicRoute path="/login" component={Login}/>
           <Route component={NotFound}/>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
