@@ -115,6 +115,7 @@ class Weather extends React.Component {
             </div>
           </div>
         </div>
+
         <div className='dayChart'>
           <BarChart
             data={this.state.hourlyChartData}
@@ -142,6 +143,16 @@ class Weather extends React.Component {
               </div>
             </div>
           )}
+        </div>
+        <div>
+          <p>hida</p>
+          <p>hida</p><p>hida</p>
+          <p>hida</p>
+          <p>hida</p>
+          <p>hida</p>
+          <p>hida</p><p>hida</p>
+          <p>hida</p>
+          <p>hida</p>
         </div>
       </div>
     );
