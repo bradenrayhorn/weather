@@ -26,7 +26,7 @@ class Weather extends React.Component {
       windBearing: 0,
     },
     daily: [],
-    dayChartData: []
+    hourlyChartData: []
   };
 
   componentDidMount() {
@@ -40,7 +40,7 @@ class Weather extends React.Component {
           let weather = response.data.data;
           let {currently} = weather;
           console.log(weather);
-          let dayChartData = weather.hourly.data.map(day => {
+          let hourlyChartData = weather.hourly.data.map(day => {
             return {
               name: moment.unix(day.time).format('ddd'),
               temperature: Math.round(day.apparentTemperature),
@@ -60,7 +60,7 @@ class Weather extends React.Component {
               windBearing: currently.windBearing || 0,
             },
             daily: weather.daily.data,
-            dayChartData: dayChartData
+            hourlyChartData: hourlyChartData
           });
         })
         .catch((error) => {
@@ -74,7 +74,7 @@ class Weather extends React.Component {
       x, y, width, value, index
     } = props;
 
-    const data = this.state.dayChartData[index];
+    const data = this.state.hourlyChartData[index];
     const r = 24;
 
     return <svg>
@@ -88,7 +88,7 @@ class Weather extends React.Component {
       x, y, width, height, index
     } = props;
 
-    const data = this.state.dayChartData[index];
+    const data = this.state.hourlyChartData[index];
 
     return <svg>
       <text x={x + width / 2} y={y} fill="#f9f9f9" textAnchor="middle" dy={-6}>{data.precipLabel}</text>
@@ -117,7 +117,7 @@ class Weather extends React.Component {
         </div>
         <div className='dayChart'>
           <BarChart
-            data={this.state.dayChartData}
+            data={this.state.hourlyChartData}
             height={200}
             width={2500}
             margin={{top: 5, bottom: 25, left: 0, right: 0}}
@@ -129,17 +129,20 @@ class Weather extends React.Component {
             <Bar dataKey='precip' fill="#8884d8" xAxisId={1} label={(x) => this.precipLabel(x)}/>
           </BarChart>
         </div>
-        {/*<div className='daily'>
+        <div className='daily'>
           {this.state.daily.map(day =>
             <div key={day.time} className='day'>
-              <div>{IconMap.getIcon(day.icon, 32)}{moment.unix(day.time).format('ddd')}</div>
+              <div className='title'>
+                {moment.unix(day.time).format('ddd')}
+              </div>
+              <div className='icon'>{IconMap.getIcon(day.icon, 32)}</div>
               <div className='data'>
-                <div>{Math.round(day.apparentTemperatureHigh)}</div>
-                <div className='precip'>{day.precipProbability * 100}%{IconMap.getPrecipIcon(day.precipType, 32)}</div>
+                <div>{Math.round(day.apparentTemperatureHigh)}°</div>
+                <div>{day.precipProbability * 100}%</div>
               </div>
             </div>
           )}
-        </div>*/}
+        </div>
       </div>
     );
   }

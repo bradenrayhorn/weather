@@ -49,28 +49,26 @@ body, html {
 }
 
 .daily {
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #393939;
 
   & .day {
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    & > * {
-      display: flex;
-      align-items: center;
-
-      & .precip {
-        margin-left: 5px;
-        display: flex;
-        align-items: center;
-      }
-    }
+    display: inline-block;
+    width: 78px;
+    text-align: center;
+    border-right: 1px solid #393939;
+    padding: 0 4px;
 
     & .data {
-      & .precip {
-        width: 65px;
-        justify-content: flex-end;
+      font-size: 14px;
+
+      & > * {
+        display: inline-block;
+        width: 50%;
       }
     }
   }
