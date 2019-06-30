@@ -4,26 +4,21 @@ import axios from "axios";
 import LocationService from "../utils/LocationService";
 import {getUid} from "../utils/user";
 import styled from "@emotion/styled";
-import SettingsIcon from "@material-ui/icons/Settings";
-import LocationIcon from "@material-ui/icons/NearMe";
 import IconMap from "../utils/IconMap";
 import WindIcon from "@material-ui/icons/Navigation";
 import moment from "moment";
-import {Bar, BarChart, LabelList, XAxis} from "recharts";
+import {Bar, BarChart, XAxis} from "recharts";
+import Navbar from "../components/Navbar";
 
 const Title = styled.div`
   font-size: 25px;
   font-weight: 600;
 `;
 
-const CustomBarLabel = (props) => {
-
-};
-
 class Weather extends React.Component {
 
   state = {
-    location: LocationService.getActiveLocation().name,
+    location: '',
     current: {
       icon: '',
       temperature: 0,
@@ -35,41 +30,43 @@ class Weather extends React.Component {
   };
 
   componentDidMount() {
-    let location = LocationService.getActiveLocation();
-    axios
-      .post('/weather.php?uid=' + getUid(), {
-        lat: location.latitude,
-        lon: location.longitude
-      })
-      .then((response) => {
-        let weather = response.data.data;
-        let {currently} = weather;
-        console.log(weather);
-        let dayChartData = weather.hourly.data.map(day => {
-          return {
-            name: moment.unix(day.time).format('ddd'),
-            temperature: Math.round(day.apparentTemperature),
-            precip: day.precipProbability * 100,
-            tempLabel: Math.round(day.apparentTemperature) + '°',
-            precipLabel: day.precipProbability > 0 ? (day.precipProbability * 100) + '%' : '',
-            time: moment.unix(day.time).format('hA'),
-            icon: day.icon
-          };
-        });
-        this.setState({
-          current: {
-            icon: currently.icon,
-            temperature: Math.round(currently.apparentTemperature),
-            windSpeed: Math.round(currently.windSpeed || 0),
-            windBearing: currently.windBearing || 0,
-          },
-          daily: weather.daily.data,
-          dayChartData: dayChartData
-        });
-      })
-      .catch((error) => {
+    LocationService.getActiveLocation(location => {
+      axios
+        .post('/weather.php?uid=' + getUid(), {
+          lat: location.latitude,
+          lon: location.longitude
+        })
+        .then((response) => {
+          let weather = response.data.data;
+          let {currently} = weather;
+          console.log(weather);
+          let dayChartData = weather.hourly.data.map(day => {
+            return {
+              name: moment.unix(day.time).format('ddd'),
+              temperature: Math.round(day.apparentTemperature),
+              precip: day.precipProbability * 100,
+              tempLabel: Math.round(day.apparentTemperature) + '°',
+              precipLabel: day.precipProbability > 0 ? Math.round(day.precipProbability * 100) + '%' : '',
+              time: moment.unix(day.time).format('hA'),
+              icon: day.icon
+            };
+          });
+          this.setState({
+            location: location.name,
+            current: {
+              icon: currently.icon,
+              temperature: Math.round(currently.apparentTemperature),
+              windSpeed: Math.round(currently.windSpeed || 0),
+              windBearing: currently.windBearing || 0,
+            },
+            daily: weather.daily.data,
+            dayChartData: dayChartData
+          });
+        })
+        .catch((error) => {
 
-      });
+        });
+    });
   }
 
   temperatureLabel = (props) => {
@@ -86,7 +83,7 @@ class Weather extends React.Component {
     </svg>;
   };
 
-  precipLabel  = (props) => {
+  precipLabel = (props) => {
     const {
       x, y, width, height, index
     } = props;
@@ -95,7 +92,7 @@ class Weather extends React.Component {
 
     return <svg>
       <text x={x + width / 2} y={y} fill="#f9f9f9" textAnchor="middle" dy={-6}>{data.precipLabel}</text>
-      <text x={x + width / 2} y={175} fill="#f9f9f9" textAnchor="middle" dy={-6}>{data.time}</text>
+      <text x={x + width / 2} y={200} fill="#f9f9f9" textAnchor="middle" dy={-6}>{data.time}</text>
     </svg>;
   };
 
@@ -104,10 +101,7 @@ class Weather extends React.Component {
 
     return (
       <div>
-        <div className='navbar'>
-          <SettingsIcon/>
-          <LocationIcon/>
-        </div>
+        <Navbar/>
         <div className='dashboard'>
           <Title>{this.state.location}</Title>
           <div className='conditions'>
@@ -124,9 +118,9 @@ class Weather extends React.Component {
         <div className='dayChart'>
           <BarChart
             data={this.state.dayChartData}
-            height={175}
+            height={200}
             width={2500}
-            margin={{top: 0, bottom: 25, left: 0, right: 0}}
+            margin={{top: 5, bottom: 25, left: 0, right: 0}}
             barCategoryGap={0}
           >
             <XAxis dataKey="name" xAxisId={0} hide/>

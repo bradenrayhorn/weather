@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import constants from "./utils/constants";
 import axios from "axios";
 import {SnackbarProvider} from "notistack";
+import {HashRouter} from "react-router-dom";
 
 axios.defaults.baseURL = constants.baseUrl;
 
@@ -14,7 +15,10 @@ if (navigator.geolocation) {
   ReactDOM.render(
     <SnackbarProvider
       autoHideDuration={2000}
-    ><App/>
+    >
+      <HashRouter>
+        <App/>
+      </HashRouter>
     </SnackbarProvider>
     , document.getElementById('root'));
 

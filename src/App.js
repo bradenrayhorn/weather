@@ -1,6 +1,5 @@
 import React from 'react';
-import {HashRouter} from "react-router-dom";
-import {Route, Switch} from "react-router";
+import {Route, Switch, withRouter} from "react-router";
 import NotFound from "./pages/NotFound";
 import Weather from "./pages/Weather";
 import Login from "./pages/Login";
@@ -9,6 +8,7 @@ import PrivateRoute from "./utils/private-route";
 import {withSnackbar} from "notistack";
 import axios from "axios";
 import {logout} from "./utils/user";
+import Locations from "./pages/Locations";
 
 class App extends React.Component {
 
@@ -20,6 +20,7 @@ class App extends React.Component {
           variant: 'error'
         });
         logout();
+        this.props.history.push('/login');
         return;
       }
       return response;
@@ -28,15 +29,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <HashRouter>
-        <Switch>
-          <PrivateRoute path="/" exact component={Weather}/>
-          <PublicRoute path="/login" component={Login}/>
-          <Route component={NotFound}/>
-        </Switch>
-      </HashRouter>
+      <Switch>
+        <PrivateRoute path="/" exact component={Weather}/>
+        <PrivateRoute path="/locations" component={Locations}/>
+        <PublicRoute path="/login" component={Login}/>
+        <Route component={NotFound}/>
+      </Switch>
     );
   }
 }
 
-export default withSnackbar(App);
+export default withRouter(withSnackbar(App));

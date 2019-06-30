@@ -2,10 +2,6 @@ body, html {
   font-family: 'Dosis', sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -14,7 +10,7 @@ body, html {
 
 .dashboard {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 5px;
   border-bottom: 1px solid #393939;
   padding: 0 20px 25px 20px;
 
@@ -48,6 +44,8 @@ body, html {
   width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
+  padding: 20px 0 20px 0;
+  border-bottom: 1px solid #393939;
 }
 
 .daily {
