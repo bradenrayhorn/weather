@@ -1,6 +1,5 @@
 body, html {
   font-family: 'Dosis', sans-serif;
-  padding: 10px;
 }
 
 * {
@@ -10,13 +9,14 @@ body, html {
 .navbar {
   display: flex;
   justify-content: space-between;
+  padding: 20px;
 }
 
 .dashboard {
   text-align: center;
   margin-top: 15px;
   border-bottom: 1px solid #393939;
-  padding-bottom: 25px;
+  padding: 0 20px 25px 20px;
 
   & .conditions {
     width: 100%;
@@ -35,9 +35,44 @@ body, html {
       & > *:last-child {
         margin-left: 7px;
       }
+
       & .label {
         font-size: 14px;
         margin-left: 2px;
+      }
+    }
+  }
+}
+
+.dayChart {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.daily {
+
+  & .day {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > * {
+      display: flex;
+      align-items: center;
+
+      & .precip {
+        margin-left: 5px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    & .data {
+      & .precip {
+        width: 65px;
+        justify-content: flex-end;
       }
     }
   }
