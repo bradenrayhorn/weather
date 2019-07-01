@@ -144,16 +144,6 @@ class Weather extends React.Component {
             </div>
           )}
         </div>
-        <div>
-          <p>hida</p>
-          <p>hida</p><p>hida</p>
-          <p>hida</p>
-          <p>hida</p>
-          <p>hida</p>
-          <p>hida</p><p>hida</p>
-          <p>hida</p>
-          <p>hida</p>
-        </div>
       </div>
     );
   }
