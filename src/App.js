@@ -9,6 +9,7 @@ import {withSnackbar} from "notistack";
 import axios from "axios";
 import {logout} from "./utils/user";
 import Locations from "./pages/Locations";
+import Settings from "./pages/Settings";
 
 class App extends React.Component {
 
@@ -32,6 +33,7 @@ class App extends React.Component {
       <Switch>
         <PrivateRoute path="/" exact component={Weather}/>
         <PrivateRoute path="/locations" component={Locations}/>
+        <PrivateRoute path="/settings" component={Settings}/>
         <PublicRoute path="/login" component={Login}/>
         <Route component={NotFound}/>
       </Switch>

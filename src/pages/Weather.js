@@ -40,11 +40,20 @@ class Weather extends React.Component {
           let weather = response.data.data;
           let {currently} = weather;
           console.log(weather);
+          let maxTemp = Math.max(...weather.hourly.data.map(d => d.apparentTemperature));
+          let minTemp = Math.min(...weather.hourly.data.map(d => d.apparentTemperature));
+          const tempRange = maxTemp - minTemp;
+
+          const barTempBase = 40;
+          const barTempRange = 33;
+
+          const precipCap = 18;
+
           let hourlyChartData = weather.hourly.data.map(day => {
             return {
               name: moment.unix(day.time).format('ddd'),
-              temperature: Math.round(day.apparentTemperature),
-              precip: day.precipProbability * 100,
+              temperature: Math.round((1 - ((maxTemp - day.apparentTemperature) / tempRange)) * barTempRange + barTempBase),
+              precip: (day.precipProbability * 100) / (100 / precipCap),
               tempLabel: Math.round(day.apparentTemperature) + '°',
               precipLabel: day.precipProbability > 0 ? Math.round(day.precipProbability * 100) + '%' : '',
               time: moment.unix(day.time).format('hA'),
@@ -79,7 +88,7 @@ class Weather extends React.Component {
 
     return <svg>
       {IconMap.getIcon(data.icon, r, {width: r, height: r, x: x + r / 2, y: y + 2})}
-      <text x={x + width / 2} y={y} fill="#f9f9f9" textAnchor="middle" dy={-6}>{value}°</text>
+      <text x={x + width / 2} y={y} fill="#f9f9f9" textAnchor="middle" dy={-6}>{data.tempLabel}</text>
     </svg>;
   };
 
@@ -127,7 +136,7 @@ class Weather extends React.Component {
             <XAxis dataKey="name" xAxisId={0} hide/>
             <XAxis dataKey="name" xAxisId={1} hide/>
             <Bar dataKey='temperature' fill="#2c2c2c" xAxisId={0} label={(x) => this.temperatureLabel(x)}/>
-            <Bar dataKey='precip' fill="#8884d8" xAxisId={1} label={(x) => this.precipLabel(x)}/>
+            <Bar dataKey='precip' fill="#8884d8" xAxisId={1} label={(x) => this.precipLabel(x)} maxBarSize={25}/>
           </BarChart>
         </div>
         <div className='daily'>
@@ -139,7 +148,7 @@ class Weather extends React.Component {
               <div className='icon'>{IconMap.getIcon(day.icon, 32)}</div>
               <div className='data'>
                 <div>{Math.round(day.apparentTemperatureHigh)}°</div>
-                <div>{day.precipProbability * 100}%</div>
+                <div>{Math.round(day.precipProbability * 100)}%</div>
               </div>
             </div>
           )}

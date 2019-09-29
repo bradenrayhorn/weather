@@ -7,6 +7,23 @@ import constants from "./utils/constants";
 import axios from "axios";
 import {SnackbarProvider} from "notistack";
 import {HashRouter} from "react-router-dom";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import {createMuiTheme} from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#f9f9f9'
+    },
+    secondary: {
+      main: '#f9f9f9'
+    }
+  },
+  typography: {
+    fontFamily: 'Dosis'
+  },
+});
 
 axios.defaults.baseURL = constants.baseUrl;
 
@@ -16,9 +33,11 @@ if (navigator.geolocation) {
     <SnackbarProvider
       autoHideDuration={2000}
     >
-      <HashRouter>
-        <App/>
-      </HashRouter>
+      <ThemeProvider theme={theme}>
+        <HashRouter>
+          <App/>
+        </HashRouter>
+      </ThemeProvider>
     </SnackbarProvider>
     , document.getElementById('root'));
 

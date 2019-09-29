@@ -6,28 +6,11 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {withSnackbar} from "notistack";
 import {setUser} from "../utils/user";
-import {createMuiTheme} from "@material-ui/core";
-import ThemeProvider from "@material-ui/styles/ThemeProvider";
 
 const LoginPage = styled.div`
   text-align: center;
   padding-top: 25px;
 `;
-
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: {
-      main: '#f9f9f9'
-    },
-    secondary: {
-      main: '#f9f9f9'
-    }
-  },
-  typography: {
-    fontFamily: 'Dosis'
-  },
-});
 
 class Login extends React.Component {
 
@@ -78,30 +61,28 @@ class Login extends React.Component {
   render() {
     return (
       <LoginPage>
-        <ThemeProvider theme={theme}>
-          <Typography variant='h5' style={{fontFamily: 'Dosis'}}>
-            Login
-          </Typography>
-          <TextField
-            label='Name'
-            value={this.state.name}
-            onChange={this.nameChange}
-            margin='dense'
-            variant='outlined'
-          />
-          <TextField
-            label='Code'
-            value={this.state.code}
-            onChange={this.codeChange}
-            margin='dense'
-            variant='outlined'
-            type='password'
-          />
-          <Button variant='outlined' color='primary' onClick={this.tryLogin}
-                  style={{display: 'block', margin: '0 auto', marginTop: '10px'}}>
-            Login
-          </Button>
-        </ThemeProvider>
+        <Typography variant='h5' style={{fontFamily: 'Dosis'}}>
+          Login
+        </Typography>
+        <TextField
+          label='Name'
+          value={this.state.name}
+          onChange={this.nameChange}
+          margin='dense'
+          variant='outlined'
+        />
+        <TextField
+          label='Code'
+          value={this.state.code}
+          onChange={this.codeChange}
+          margin='dense'
+          variant='outlined'
+          type='password'
+        />
+        <Button variant='outlined' color='primary' onClick={this.tryLogin}
+                style={{display: 'block', margin: '0 auto', marginTop: '10px'}}>
+          Login
+        </Button>
       </LoginPage>
     );
   }

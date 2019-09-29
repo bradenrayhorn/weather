@@ -17,4 +17,8 @@ const getUid = () => {
   return localStorage.getItem('uid');
 };
 
-export {loggedIn, logout, setUser, getUid}
+const getUser = () => {
+  return localStorage.getItem('user');
+};
+
+export {loggedIn, logout, setUser, getUid, getUser}
