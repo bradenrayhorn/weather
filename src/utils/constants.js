@@ -1,5 +1,5 @@
 const constants = {
-  baseUrl: 'https://weather.braden.cc'
+  baseUrl: 'https://weather-backend.infra.braden.cc'
 };
 
 export default constants;
